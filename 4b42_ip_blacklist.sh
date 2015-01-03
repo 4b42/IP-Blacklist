@@ -38,3 +38,5 @@ fi
 # files
 IPS=$(cat /etc/fail2ban/ip.blacklist)
 wget -q --header="X-4B42-KEY:${APIKEY}" --post-data="ips=$IPS" --post-file=ip -O /etc/fail2ban/ip.blacklist https://api.4b42.com/tools/blacklist/ip
+# reload fail2ban service
+service fail2ban reload
