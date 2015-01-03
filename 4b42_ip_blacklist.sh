@@ -21,17 +21,20 @@
 #-----------------------------------------------------------------------#
 # 2014-03-26	Kevin Buehl		created
 #-----------------------------------------------------------------------#
+# you can find your api key in your profile at https://www.4b42.com
 APIKEY=""
+# check if script run as root
+if [ "$(id -u)" != "0" ]; then
+   echo "This script must be run as root" 1>&2
+   exit 1
+fi
 # check if fail2ban installed
 if [ ! -d "/etc/fail2ban/" ]; then
    echo "please install fail2ban"
-   exit 0
+   exit 1
 elif [ ! -e "/etc/fail2ban/ip.blacklist" ]; then
    touch /etc/fail2ban/ip.blacklist
 fi
 # files
 IPS=$(cat /etc/fail2ban/ip.blacklist)
-# check if banlist is empty
-if [ -s "/etc/fail2ban/ip.blacklist" ]; then
-   wget -q --header="X-4B42-KEY:${APIKEY}" --post-data="ips=$IPS" --post-file=ip -O- https://api.4b42.com/tools/blacklist/ip
-fi
+wget -q --header="X-4B42-KEY:${APIKEY}" --post-data="ips=$IPS" --post-file=ip -O /etc/fail2ban/ip.blacklist https://api.4b42.com/tools/blacklist/ip
