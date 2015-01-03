@@ -31,7 +31,6 @@ elif [ ! -e "/etc/fail2ban/ip.blacklist" ]; then
 fi
 # files
 IPS=$(cat /etc/fail2ban/ip.blacklist)
-LOG="/var/log/4b42_ip_blacklist.log"
 # check if banlist is empty
 if [ -s "/etc/fail2ban/ip.blacklist" ]; then
    wget -q --header="X-4B42-KEY:${APIKEY}" --post-data="ips=$IPS" --post-file=ip -O- https://api.4b42.com/tools/blacklist/ip
