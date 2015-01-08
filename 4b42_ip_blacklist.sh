@@ -37,6 +37,7 @@ elif [ ! -e "/etc/fail2ban/ip.blacklist" ]; then
 fi
 # files
 IPS=$(cat /etc/fail2ban/ip.blacklist)
-wget -q --header="X-4B42-KEY:${APIKEY}" --post-data="ips=$IPS" --post-file=ip -O /etc/fail2ban/ip.blacklist https://api.4b42.com/tools/blacklist/ip
+rm -f /etc/fail2ban/ip.blacklist
+wget -q --header="X-4B42-KEY:${APIKEY}" --post-data="ips=$IPS" --post-file=ip -O /etc/fail2ban/ip.blacklist https://api.4b42.com/tools/security/blacklist
 # reload fail2ban service
 service fail2ban reload
