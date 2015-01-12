@@ -20,9 +20,15 @@
 
 #-----------------------------------------------------------------------#
 # 2014-03-26	Kevin Buehl		created
+# 2015-01-13	Kevin Buehl		fix update only on status code 200
 #-----------------------------------------------------------------------#
 # you can find your api key in your profile at https://www.4b42.com
 APIKEY=""
+# check if api key not empty
+if [ "$APIKEY" = "" ]; then
+   echo "You must set an apikey first" 1>&2
+   exit 1
+fi
 # check if script run as root
 if [ "$(id -u)" != "0" ]; then
    echo "This script must be run as root" 1>&2
@@ -37,7 +43,12 @@ elif [ ! -e "/etc/fail2ban/ip.blacklist" ]; then
 fi
 # files
 IPS=$(cat /etc/fail2ban/ip.blacklist)
-rm -f /etc/fail2ban/ip.blacklist
-wget -q --header="X-4B42-KEY:${APIKEY}" --post-data="ips=$IPS" --post-file=ip -O /etc/fail2ban/ip.blacklist https://api.4b42.com/tools/security/blacklist
+status=`wget --header="X-4B42-KEY:${APIKEY}" --post-data="ips=$IPS" --post-file=ip -O /tmp/ip.blacklist https://api.4b42.com/tools/security/blacklist 2>&1 |egrep "HTTP"|awk {'print $6'}`
+if [ $status == 200 ]; then
+   rm -f /etc/fail2ban/ip.blacklist
+   mv /tmp/ip.blacklist /etc/fail2ban/ip.blacklist
+else
+   echo $(cat /tmp/ip.blacklist);
+fi
 # reload fail2ban service
 service fail2ban reload
