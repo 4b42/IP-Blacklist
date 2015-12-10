@@ -22,9 +22,13 @@
 # 2014-03-26	Kevin Buehl		created
 # 2015-01-13	Kevin Buehl		fix update only on status code 200
 # 2015-12-07	Kevin Buehl		add new url for ip blacklist
+# 2015-12-10	Kevin Buehl		check if apikey file exist
 #-----------------------------------------------------------------------#
 # you can find your api key in your profile at https://www.4b42.com
-APIKEY=""
+if ! [ -f "/opt/4b42/api.key" ]; then
+   echo "Please use our install script." 1>&2
+   exit 1
+fi
 # check if api key not empty
 if [ "$APIKEY" = "" ]; then
    echo "You must set an apikey first" 1>&2
