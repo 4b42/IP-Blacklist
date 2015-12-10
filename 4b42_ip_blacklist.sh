@@ -24,14 +24,10 @@
 # 2015-12-07	Kevin Buehl		add new url for ip blacklist
 # 2015-12-10	Kevin Buehl		check if apikey file exist
 #-----------------------------------------------------------------------#
-# you can find your api key in your profile at https://www.4b42.com
+# check if apikey file exist
 if ! [ -f "/opt/4b42/api.key" ]; then
+   APIKEY=$(cat /opt/4b42/api.key)
    echo "Please use our install script." 1>&2
-   exit 1
-fi
-# check if api key not empty
-if [ "$APIKEY" = "" ]; then
-   echo "You must set an apikey first" 1>&2
    exit 1
 fi
 # check if script run as root
