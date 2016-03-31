@@ -69,7 +69,7 @@ if [ -f "/tmp/iptables-multiport.conf" ]; then
       rm -f /tmp/iptables-multiport.conf
       echo "No modification on iptables-multiport.conf needed."
    else
-      if [ -f "/etc/fail2ban/action.d/iptables-multiport.conf" ] then
+      if [ -f "/etc/fail2ban/action.d/iptables-multiport.conf" ]; then
          mv /etc/fail2ban/action.d/iptables-multiport.conf /etc/fail2ban/action.d/iptables-multiport.conf.bak
          mv /tmp/iptables-multiport.conf /etc/fail2ban/action.d/iptables-multiport.conf
          echo "Got modified iptables-multiport.conf"
