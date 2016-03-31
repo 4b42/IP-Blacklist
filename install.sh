@@ -20,7 +20,7 @@
 
 #-----------------------------------------------------------------------#
 # 2016-03-15	Maik Ballichar	created
-# 2016-03-31	Kevin Buehl		optimization and clean up
+# 2016-03-31	Kevin Buehl	optimization and clean up
 #-----------------------------------------------------------------------#
 #check if debian is installed
 if ! [ -f "/etc/debian_version" ]; then
@@ -65,7 +65,7 @@ fi
 wget -O /tmp/iptables-multiport.conf https://raw.githubusercontent.com/4b42/IP-Blacklist/master/fail2ban/action.d/iptables-multiport.conf --no-check-certificate
 if [ -f "/tmp/iptables-multiport.conf" ]; then
    diff /etc/fail2ban/action.d/iptables-multiport.conf /tmp/iptables-multiport.conf > /dev/null 2>&1
-   if [ "$?" -eq 0 ] then
+   if [ "$?" -eq 0 ]; then
       rm -f /tmp/iptables-multiport.conf
       echo "No modification on iptables-multiport.conf needed."
    else
