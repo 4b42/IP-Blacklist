@@ -27,9 +27,10 @@
 #-----------------------------------------------------------------------#
 # check if apikey file exist
 if ! [ -f "/opt/4b42/api.key" ]; then
-   APIKEY=$(cat /opt/4b42/api.key)
    echo "Please use our install script." 1>&2
    exit 1
+else
+   APIKEY=$(cat /opt/4b42/api.key)
 fi
 # check if script run as root
 if [ "$(id -u)" != "0" ]; then
@@ -42,6 +43,10 @@ if [ ! -d "/etc/fail2ban/" ]; then
    exit 1
 elif [ ! -e "/etc/fail2ban/ip.blacklist" ]; then
    touch /etc/fail2ban/ip.blacklist
+fi
+# check if apikey not empty
+if [ -z "$APIKEY" ]; then
+   echo "Please enter your APIKEY in file /opt/4b42/api.key"
 fi
 # files
 IPS=$(cat /etc/fail2ban/ip.blacklist)
