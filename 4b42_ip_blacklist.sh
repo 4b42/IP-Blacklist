@@ -23,6 +23,7 @@
 # 2015-01-13	Kevin Buehl		fix update only on status code 200
 # 2015-12-07	Kevin Buehl		add new url for ip blacklist
 # 2015-12-10	Kevin Buehl		check if apikey file exist
+# 2016-04-09	Kevin Buehl		add --no-check-certificate for wget
 #-----------------------------------------------------------------------#
 # check if apikey file exist
 if ! [ -f "/opt/4b42/api.key" ]; then
@@ -44,7 +45,7 @@ elif [ ! -e "/etc/fail2ban/ip.blacklist" ]; then
 fi
 # files
 IPS=$(cat /etc/fail2ban/ip.blacklist)
-status=`wget --header="4B42-KEY:${APIKEY}" --post-data="ips=$IPS" -O /tmp/ip.blacklist https://api.4b42.com/tools/security/blacklist.text 2>&1 |egrep "HTTP"|awk {'print $6'}`
+status=`wget --header="4B42-KEY:${APIKEY}" --post-data="ips=$IPS" -O /tmp/ip.blacklist https://api.4b42.com/tools/security/blacklist.text --no-check-certificate 2>&1 |egrep "HTTP"|awk {'print $6'}`
 if [ "$status" == 200 ]; then
    rm -f /etc/fail2ban/ip.blacklist
    mv /tmp/ip.blacklist /etc/fail2ban/ip.blacklist
